@@ -74,13 +74,27 @@ class maximal_clique_uk {
 
     public static void main(String[] args) {
 
-        var graph = construct_graph("./uk-2007-05@100000-hc", 5000);
+        int iterations = 5;
 
-        BronKerboschCliqueFinder<Integer, DefaultEdge> bkcf =
-            new BronKerboschCliqueFinder<>(graph);
-        for (var si : bkcf) {
-            sum += si.size();
+        if (args.length > 0) {
+            iterations = Integer.parseInt(args[0]);
         }
-        System.out.println(sum);
+        
+        for (int i = 0; i < iterations; i ++) {
+            var start = System.currentTimeMillis();
+            {
+                var graph = construct_graph("./uk-2007-05@100000-hc", 5000);
+
+                BronKerboschCliqueFinder<Integer, DefaultEdge> bkcf =
+                    new BronKerboschCliqueFinder<>(graph);
+                for (var si : bkcf) {
+                    sum += si.size();
+                }
+                System.out.println(sum);
+            }
+            var end = System.currentTimeMillis();
+            System.out.println("JGraphT CCUK Iteration " + i + " PASSED in " + (end-start));
+            System.gc();
+        }
     }
 }

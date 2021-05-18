@@ -74,22 +74,37 @@ class maximal_clique_enwiki {
 
     public static void main(String[] args) {
 
-        var graph = construct_graph("./enwiki-2018", 10000);
+        int iterations = 5;
 
-        BronKerboschCliqueFinder<Integer, DefaultEdge> bkcf =
-            new BronKerboschCliqueFinder<>(graph);
-        for (var si : bkcf) {
-            sum += si.size();
+        if (args.length > 0) {
+            iterations = Integer.parseInt(args[0]);
         }
-        System.out.println(sum);
+        
 
-        // BrownBacktrackColoring<Integer, DefaultEdge> bbc = new BrownBacktrackColoring<>(graph);
-        // sum += bbc.getChromaticNumber();
+        for (int i = 0; i < iterations; i ++) {
+            var start = System.currentTimeMillis();
+            {
+                var graph = construct_graph("./enwiki-2018", 10000);
 
-        // MatchingAlgorithm.Matching<Integer, DefaultEdge> m = new EdmondsMaximumCardinalityMatching<>(graph).getMatching();
+                BronKerboschCliqueFinder<Integer, DefaultEdge> bkcf =
+                    new BronKerboschCliqueFinder<>(graph);
+                for (var si : bkcf) {
+                    sum += si.size();
+                }
+                System.out.println(sum);
 
-        // VertexScoringAlgorithm<Integer, Double> pr = new PageRank<>(graph);
-        // pr.getScores().forEach((k, v) -> sum_double += v);
-        // System.out.println(sum_double);
+                // BrownBacktrackColoring<Integer, DefaultEdge> bbc = new BrownBacktrackColoring<>(graph);
+                // sum += bbc.getChromaticNumber();
+
+                // MatchingAlgorithm.Matching<Integer, DefaultEdge> m = new EdmondsMaximumCardinalityMatching<>(graph).getMatching();
+
+                // VertexScoringAlgorithm<Integer, Double> pr = new PageRank<>(graph);
+                // pr.getScores().forEach((k, v) -> sum_double += v);
+                // System.out.println(sum_double);            
+            }
+            var end = System.currentTimeMillis();
+            System.out.println("JGraphT CCUK Iteration " + i + " PASSED in " + (end-start));
+            System.gc();
+        }
     }
 }

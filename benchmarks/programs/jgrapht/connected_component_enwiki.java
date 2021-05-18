@@ -64,10 +64,24 @@ class connected_component_enwiki {
 
     public static void main(String[] args) {
 
-        var graph = construct_graph("./enwiki-2018", 80000);
+        int iterations = 5;
 
-        var inspector = new BiconnectivityInspector<>(graph);
-        var size = inspector.getConnectedComponents().size();
-        System.out.println(size);
+        if (args.length > 0) {
+            iterations = Integer.parseInt(args[0]);
+        }
+        
+        for (int i = 0; i < iterations; i ++) {
+            var start = System.currentTimeMillis();
+            {
+                var graph = construct_graph("./enwiki-2018", 80000);
+
+                var inspector = new BiconnectivityInspector<>(graph);
+                var size = inspector.getConnectedComponents().size();
+                System.out.println(size);
+            }
+            var end = System.currentTimeMillis();
+            System.out.println("JGraphT CCUK Iteration " + i + " PASSED in " + (end-start));
+            System.gc();
+        }
     }
 }

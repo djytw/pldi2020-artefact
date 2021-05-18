@@ -64,10 +64,24 @@ class connected_component_uk {
 
     public static void main(String[] args) {
 
+        int iterations = 5;
+
+        if (args.length > 0) {
+            iterations = Integer.parseInt(args[0]);
+        }
         var graph = construct_graph("./uk-2007-05@100000-hc", 900000);
 
-        var inspector = new BiconnectivityInspector<>(graph);
-        var size = inspector.getConnectedComponents().size();
-        System.out.println(size);
+
+        for (int i = 0; i < iterations; i ++) {
+            var start = System.currentTimeMillis();
+            {
+                var inspector = new BiconnectivityInspector<>(graph);
+                var size = inspector.getConnectedComponents().size();
+                System.out.println(size);
+            }
+            var end = System.currentTimeMillis();
+            System.out.println("JGraphT CCUK Iteration " + i + " PASSED in " + (end-start));
+            System.gc();
+        }
     }
 }
